@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "serverclient.h"
-#include <stdbool.h>
 
 t_client_state	g_client = {0, 1};
 
