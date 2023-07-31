@@ -35,10 +35,10 @@ void send_char_as_signal(int pid, char c)
 		else
 			kill(pid, SIGUSR2);
 		i++;
-		while (!g_acknowledged) // wait for acknowledgment
-			usleep(50);
+		while (!g_acknowledged); // wait for acknowledgment
+			//usleep(10);
 		g_acknowledged = 0;
-		usleep(100);
+		//usleep(10);
 	}
 }
 

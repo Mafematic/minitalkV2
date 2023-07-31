@@ -19,7 +19,7 @@
 # include <signal.h>
 # include <sys/types.h>
 
-# define BUFFER_SIZE 1024
+# define BUFFER_SIZE 110024
 
 typedef struct s_server_state
 {
