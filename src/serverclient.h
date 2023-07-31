@@ -34,11 +34,12 @@ typedef struct s_client_state {
 	volatile sig_atomic_t	running;
 }	t_client_state;
 
+void	print_parameters(pid_t server_pid, char *string_to_send);
 int		setup_signal(int signal_number, void (*handler)(int));
-void	sigpipe_handler(int signum);
 void	sigusr_handler(int signum, siginfo_t *info, void *context);
 void	interrupt_handler(int signum);
 void	acknowledgment_handler(int signum);
+void	send_signals_of_char(int pid, int i, int ascii_value);
 void	send_char_as_signal(int pid, char c);
 
 #endif

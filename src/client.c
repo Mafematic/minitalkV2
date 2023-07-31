@@ -52,22 +52,7 @@ void	send_char_as_signal(int pid, char c)
 	i = 0;
 	while (i < 8)
 	{
-		if (ascii_value & (1 << i))
-		{
-			if (kill(pid, SIGUSR1) == -1)
-			{
-				ft_putendl_fd("Error sending signal to server.", 1);
-				exit(EXIT_FAILURE);
-			}
-		}
-		else
-		{
-			if (kill(pid, SIGUSR2) == -1) 
-			{
-				ft_putendl_fd("Error sending signal to server", 1);
-				exit(EXIT_FAILURE);
-			}
-		}
+		send_signals_of_char(pid, i, ascii_value);
 		i++;
 		while (!g_client.acknowledged)
 			(void)0;
@@ -87,25 +72,15 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	server_pid = ft_atoi(argv[1]);
-	write(1, "Server PID: ", 12);
-	ft_putnbr_fd(server_pid, 1);
-	write(1, "\n", 1);
 	string_to_send = argv[2];
-	write(1, "String: ", 8);
-	ft_putendl_fd(string_to_send, 1);
+	print_parameters(server_pid, string_to_send);
 	if (setup_signal(SIGUSR1, acknowledgment_handler) != 0)
-	{
 		return (EXIT_FAILURE);
-	}
 	if (setup_signal(SIGINT, interrupt_handler) != 0)
-	{
 		return (EXIT_FAILURE);
-	}
 	i = 0;
 	while (g_client.running && string_to_send[i] != '\0')
-	{
 		send_char_as_signal(server_pid, string_to_send[i++]);
-	}
 	send_char_as_signal(server_pid, '\0');
 	sleep(1);
 	return (0);

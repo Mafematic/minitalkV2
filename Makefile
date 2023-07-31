@@ -11,7 +11,7 @@ OBJ_DIR = obj
 
 # Source files
 SERVER_SOURCES = $(SRC_DIR)/server.c
-CLIENT_SOURCES = $(SRC_DIR)/client.c
+CLIENT_SOURCES = $(SRC_DIR)/client.c $(SRC_DIR)/client_utils.c 
 LIBFT_SOURCES = $(wildcard $(LIBFT_DIR)/*.c) $(wildcard $(LIBFT_DIR)/bonus/*.c)
 
 # Object files
