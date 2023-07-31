@@ -55,7 +55,8 @@ int	main(void)
 	sa.sa_sigaction = sigusr_handler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
-	if (sigaction(SIGUSR1, &sa, NULL) == -1 || sigaction(SIGUSR2, &sa, NULL) == -1)
+	if (sigaction(SIGUSR1, &sa, NULL) == -1 
+		|| sigaction(SIGUSR2, &sa, NULL) == -1)
 	{
 		ft_putendl_fd("Error setting up sigaction", 1);
 		return (EXIT_FAILURE);

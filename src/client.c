@@ -13,9 +13,9 @@
 #include "serverclient.h"
 #include <stdbool.h>
 
-t_client_state g_client = {0, 1};
+t_client_state	g_client = {0, 1};
 
-void interrupt_handler(int signum) 
+void	interrupt_handler(int signum)
 {
 	(void)signum;
 	g_client.running = 0;
@@ -28,20 +28,18 @@ void	acknowledgment_handler(int signum)
 	g_client.acknowledged = 1;
 }
 
-int setup_signal(int signal_number, void (*handler)(int))
+int	setup_signal(int signal_number, void (*handler)(int))
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	sa.sa_handler = handler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
-
 	if (sigaction(signal_number, &sa, NULL) == -1)
 	{
 		write(1, "Error setting up sigaction\n", 27);
 		return (1);
 	}
-
 	return (0);
 }
 
@@ -56,23 +54,24 @@ void	send_char_as_signal(int pid, char c)
 	{
 		if (ascii_value & (1 << i))
 		{
-			if (kill(pid, SIGUSR1) == -1) {
+			if (kill(pid, SIGUSR1) == -1)
+			{
 				ft_putendl_fd("Error sending signal to server.", 1);
 				exit(EXIT_FAILURE);
 			}
-		} 
-		else 
+		}
+		else
 		{
-			if (kill(pid, SIGUSR2) == -1) {
+			if (kill(pid, SIGUSR2) == -1) 
+			{
 				ft_putendl_fd("Error sending signal to server", 1);
 				exit(EXIT_FAILURE);
 			}
 		}
 		i++;
-		while (!g_client.acknowledged);
-			//usleep(10);
+		while (!g_client.acknowledged)
+			(void)0;
 		g_client.acknowledged = 0;
-		//usleep(10);
 	}
 }
 
