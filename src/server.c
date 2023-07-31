@@ -14,13 +14,13 @@
 
 t_server_state	g_server = {0, 0, {0}, 0};
 
-void sigusr_handler(int signum, siginfo_t *info, void *context)
+void	sigusr_handler(int signum, siginfo_t *info, void *context)
 {
 	(void)context;
 	if (signum != SIGUSR1 && signum != SIGUSR2)
 	{
-		write(1, "Not the correct signal\n", 23);
-		return;
+		ft_putendl_fd("Not the correct signal", 1);
+		return ;
 	}
 	if (g_server.bit_count == 0)
 		g_server.received_char = 0;
@@ -35,19 +35,18 @@ void sigusr_handler(int signum, siginfo_t *info, void *context)
 		g_server.buffer[g_server.buffer_index++] = g_server.received_char;
 		if (g_server.received_char == '\0')
 		{
-			ft_putstr_fd(g_server.buffer, 1);
-			write(1, "\n", 1);
+			ft_putendl_fd(g_server.buffer, 1);
 			g_server.buffer_index = 0;
 		}
 		g_server.bit_count = 0;
 	}
-	kill(info->si_pid, SIGUSR1); // send acknowledgement signal back to client
+	kill(info->si_pid, SIGUSR1);
 }
 
-int main(void)
+int	main(void)
 {
-	pid_t server_pid;
-	struct sigaction sa;
+	pid_t				server_pid;
+	struct sigaction	sa;
 
 	server_pid = getpid();
 	write(1, "Server PID ", 11);
@@ -55,11 +54,11 @@ int main(void)
 	write(1, "\n", 1);
 	sa.sa_sigaction = sigusr_handler;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_SIGINFO; // enable the SA_SIGINFO flag
+	sa.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &sa, NULL) == -1 || sigaction(SIGUSR2, &sa, NULL) == -1)
 	{
-		write(1, "Error setting up sigaction\n", 27);
-		return (1);
+		ft_putendl_fd("Error setting up sigaction", 1);
+		return (EXIT_FAILURE);
 	}
 	while (1)
 	{

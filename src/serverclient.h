@@ -19,7 +19,7 @@
 # include <signal.h>
 # include <sys/types.h>
 
-# define BUFFER_SIZE 110024
+# define BUFFER_SIZE 22222
 
 typedef struct s_server_state
 {
@@ -29,7 +29,16 @@ typedef struct s_server_state
 	int				buffer_index;
 }	t_server_state;
 
-void sigusr_handler(int signum, siginfo_t *info, void *context);
+typedef struct s_client_state {
+	volatile sig_atomic_t	acknowledged;
+	volatile sig_atomic_t	running;
+} t_client_state;
+
+int 	setup_signal(int signal_number, void (*handler)(int));
+void 	sigpipe_handler(int signum) ;
+void	sigusr_handler(int signum, siginfo_t *info, void *context);
+void	interrupt_handler(int signum);
+void	acknowledgment_handler(int signum);
 void	send_char_as_signal(int pid, char c);
 
 #endif
